@@ -1,0 +1,18 @@
+.chat {
+  --chat--color--primary: var(--deep-ocean);
+  --chat--color--primary-shade-50: var(--ink);
+  --chat--color--primary-shade-100: var(--ink);
+  --chat--color--secondary: var(--deep-ocean);
+  --chat--color-light: var(--bg);
+  --chat--header--background: var(--ink);
+  --chat--header--color: var(--cream);
+  --chat--toggle--background: var(--accent);
+  --chat--toggle--hover--background: var(--butter);
+  --chat--toggle--active--background: var(--butter);
+  --chat--toggle--color: var(--accent-ink);
+  --chat--message--bot--background: var(--surface);
+  --chat--message--bot--color: var(--text);
+  --chat--window--width: min(380px, calc(100vw - 32px));
+  --chat--window--height: min(580px, calc(100dvh - 96px));
+  --chat--window--border-radius: var(--radius-card);
+}
