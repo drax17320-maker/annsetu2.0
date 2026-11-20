@@ -1,0 +1,32 @@
+name: Import AnnSetu source
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/import-annsetu.yml']
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Import upstream and apply the website changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f annsetu-frontend.patch
+          test ! -e web/package.json
+          git fetch --depth=1 https://github.com/teenguyy/AnnSetu.git refs/heads/claude/fullstack-dev-environment-laazgt
+          git checkout FETCH_HEAD -- .
+          git apply --index annsetu-frontend.patch
+          git apply --index --exclude=web/app/page.tsx annsetu-chat.patch
+          sed -i '/^import { SiteFooter }/a import { WebsiteChat } from "@/components/site/website-chat";' web/app/page.tsx
+          sed -i '/^      <SiteFooter \/>/a\      <WebsiteChat />' web/app/page.tsx
+          grep -q '<WebsiteChat />' web/app/page.tsx
+          grep -q 'Tanshik Choudary' web/app/page.tsx
+          git add web/app/page.tsx
+          git rm annsetu-chat.patch annsetu-frontend.patch
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m "Import AnnSetu with refreshed landing page, team credits and chat"
+          git push origin HEAD:main
